@@ -1,14 +1,30 @@
 import os
+import firebase_admin
+from firebase_admin import credentials, auth as firebase_auth
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
-from google.oauth2 import id_token
-from google.auth.transport import requests
 from .models import User, StartupProfile, InfluencerProfile
 from .serializers import UserSerializer
 import jwt
 from datetime import datetime, timedelta
+
+# Initialize Firebase Admin
+if not firebase_admin._apps:
+    try:
+        service_account_info = os.environ.get("FIREBASE_SERVICE_ACCOUNT_JSON")
+        if service_account_info:
+            import json
+
+            cred_dict = json.loads(service_account_info)
+            cred = credentials.Certificate(cred_dict)
+        else:
+            cred_path = os.path.join(settings.BASE_DIR, "firebase-service-account.json")
+            cred = credentials.Certificate(cred_path)
+        firebase_admin.initialize_app(cred)
+    except Exception as e:
+        print(f"Error initializing Firebase Admin: {e}")
 
 
 # Create a simple utility for JWT (since we are not using a heavy library for MVP)
@@ -33,23 +49,15 @@ class GoogleAuthView(APIView):
             )
 
         try:
-            # Verify the ID token
-            # CLIENT_ID should be in your .env
-            idinfo = id_token.verify_oauth2_token(
-                token, requests.Request(), os.environ.get("GOOGLE_CLIENT_ID")
-            )
+            # Verify the Firebase ID token
+            decoded_token = firebase_auth.verify_id_token(token)
 
-            if idinfo["iss"] not in [
-                "accounts.google.com",
-                "https://accounts.google.com",
-            ]:
-                raise ValueError("Wrong issuer.")
-
-            google_id = idinfo["sub"]
-            email = idinfo["email"]
-            first_name = idinfo.get("given_name", "")
-            last_name = idinfo.get("family_name", "")
-            picture = idinfo.get("picture", "")
+            google_id = decoded_token["uid"]
+            email = decoded_token["email"]
+            name = decoded_token.get("name", "")
+            first_name = name.split(" ")[0] if " " in name else name
+            last_name = name.split(" ")[1] if " " in name else ""
+            picture = decoded_token.get("picture", "")
 
             # Create or get user
             user, created = User.objects.get_or_create(

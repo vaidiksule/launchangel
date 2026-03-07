@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth } from "@/components/providers/AuthProvider";
-import { GoogleLogin } from "@react-oauth/google";
 import { motion } from "framer-motion";
 import { ArrowRight, Bot, Zap, TrendingUp, ShieldCheck, Globe } from "lucide-react";
 import Link from "next/link";
@@ -10,15 +9,6 @@ import React from "react";
 export default function LandingPage() {
   const { login, user, logout } = useAuth();
 
-  const handleAuthSuccess = async (credentialResponse: any) => {
-    if (credentialResponse.credential) {
-      try {
-        await login(credentialResponse.credential, "startup");
-      } catch (err) {
-        console.error("Auth backend error:", err);
-      }
-    }
-  };
 
   return (
     <div className="relative min-h-screen bg-[#050505] text-white selection:bg-purple-500/30 overflow-hidden">
@@ -53,15 +43,13 @@ export default function LandingPage() {
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-4 scale-90 md:scale-100 font-sans">
-              <GoogleLogin
-                onSuccess={handleAuthSuccess}
-                onError={() => console.log('Login Failed')}
-                theme="filled_black"
-                shape="pill"
-                text="continue_with"
-              />
-            </div>
+            <button
+              onClick={() => login("startup")}
+              className="flex items-center gap-2 px-6 py-2.5 bg-white text-black font-semibold rounded-full hover:bg-zinc-200 transition-all text-sm font-sans"
+            >
+              <Bot className="w-4 h-4" />
+              Continue with Google
+            </button>
           )}
         </div>
       </nav>
