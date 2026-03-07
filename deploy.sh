@@ -1,12 +1,13 @@
 #!/bin/bash
 
 # Configuration
-PROJECT_ID="your-project-id"
-REGION="us-central1"
+PROJECT_ID="glass-arcanum-442707-b3"
+API_REGION="us-central1"
+WEB_REGION="europe-west1"
 SERVICE_NAME_BACKEND="launchangel-api"
-SERVICE_NAME_FRONTEND="launchangel-web"
+SERVICE_NAME_FRONTEND="launchangel-frontend"
 
-echo "🚀 Starting Deployment for LaunchAngel..."
+echo "🚀 Starting Manual Deployment for LaunchAngel..."
 
 # 1. Build and Push Backend
 echo "📦 Building Backend..."
@@ -17,12 +18,11 @@ echo "🚀 Deploying Backend to Cloud Run..."
 gcloud run deploy $SERVICE_NAME_BACKEND \
     --image gcr.io/$PROJECT_ID/$SERVICE_NAME_BACKEND \
     --platform managed \
-    --region $REGION \
+    --region $API_REGION \
     --allow-unauthenticated \
-    --set-env-vars "DEBUG=False,ALLOWED_HOSTS=*"
+    --port 8080
 
 # 3. Build and Push Frontend
-# Note: Next.js needs the API URL at build time for some features
 echo "📦 Building Frontend..."
 gcloud builds submit --tag gcr.io/$PROJECT_ID/$SERVICE_NAME_FRONTEND ./frontend
 
@@ -31,7 +31,8 @@ echo "🚀 Deploying Frontend to Cloud Run..."
 gcloud run deploy $SERVICE_NAME_FRONTEND \
     --image gcr.io/$PROJECT_ID/$SERVICE_NAME_FRONTEND \
     --platform managed \
-    --region $REGION \
-    --allow-unauthenticated
+    --region $WEB_REGION \
+    --allow-unauthenticated \
+    --port 8080
 
-echo "✅ Deployment Complete!"
+echo "✅ Manual Deployment Complete!"
