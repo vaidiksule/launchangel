@@ -142,4 +142,11 @@ REST_FRAMEWORK = {
 
 CORS_ALLOW_ALL_ORIGINS = True  # For development
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://launchangel.app",
+    "https://*.run.app",
+]
+
 AUTH_USER_MODEL = "users.User"
