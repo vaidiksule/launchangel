@@ -2,181 +2,126 @@
 
 import { useAuth } from "@/components/providers/AuthProvider";
 import { motion } from "framer-motion";
-import { ArrowRight, Bot, Zap, TrendingUp, ShieldCheck, Globe } from "lucide-react";
+import { Bot, ChevronRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
 export default function LandingPage() {
   const { login, user, logout } = useAuth();
 
-
   return (
-    <div className="relative min-h-screen bg-[#050505] text-white selection:bg-purple-500/30 overflow-hidden">
-      {/* Background Glows */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-600/20 blur-[120px] rounded-full" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-600/20 blur-[120px] rounded-full" />
+    <div className="relative min-h-screen bg-[#fafafa] text-black font-sans antialiased overflow-hidden flex flex-col">
+      {/* Delicate Grid Background */}
+      <div className="absolute inset-0 bg-grid pointer-events-none opacity-[0.2] z-0" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,#fafafa_80%)] pointer-events-none z-0" />
 
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-6 backdrop-blur-md bg-black/20 border-b border-white/5">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-gradient-to-tr from-purple-600 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
-            <Bot className="w-6 h-6 text-white" />
+      {/* Ambient Glows */}
+      <div className="absolute top-[5%] left-[20%] w-[600px] h-[600px] bg-emerald-400/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-[20%] left-[10%] w-[500px] h-[500px] bg-teal-300/5 blur-[100px] rounded-full pointer-events-none" />
+      <div className="absolute top-[40%] right-[15%] w-[700px] h-[700px] bg-green-400/5 blur-[140px] rounded-full pointer-events-none" />
+
+      {/* Robust Capsule Navbar */}
+      <header className="fixed top-12 left-1/2 -translate-x-1/2 z-50 w-full flex justify-center px-8">
+        <div className="flex items-center justify-between h-14 min-w-[480px] px-8 bg-white/70 backdrop-blur-2xl rounded-full border border-zinc-200/50 shadow-[0_12px_44px_-10px_rgba(0,0,0,0.06)] relative">
+
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-black rounded-[11px] flex items-center justify-center shadow-md">
+              <Bot className="w-4.5 h-4.5 text-white" />
+            </div>
+            <span className="text-[14px] font-bold tracking-tight">LaunchAngel</span>
           </div>
-          <span className="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-zinc-400">
-            LaunchAngel
-          </span>
-        </div>
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400 font-sans">
-          <Link href="#features" className="hover:text-white transition-colors">Features</Link>
-          <Link href="#how-it-works" className="hover:text-white transition-colors">How it Works</Link>
-          <Link href="#pricing" className="hover:text-white transition-colors">Pricing</Link>
-        </div>
-        <div className="flex items-center gap-4">
-          {user ? (
-            <div className="flex items-center gap-4 font-sans">
-              <span className="text-zinc-400 text-sm">Hi, {user.first_name}</span>
+
+          <div className="flex items-center">
+            {user ? (
+              <div className="flex items-center gap-4">
+                <Link
+                  href={user.role ? (user.role === "startup" ? "/startup/dashboard" : "/influencer/dashboard") : "/onboarding"}
+                  className="h-10 px-6 flex items-center justify-center bg-black text-white text-[12px] font-bold rounded-full hover:bg-zinc-800 transition-all shadow-lg active:scale-95"
+                >
+                  Dashboard
+                </Link>
+                <button
+                  onClick={logout}
+                  className="w-10 h-10 flex items-center justify-center text-zinc-300 hover:text-black transition-colors"
+                >
+                  <span className="text-2xl font-light leading-none">&times;</span>
+                </button>
+              </div>
+            ) : (
               <button
-                onClick={logout}
-                className="px-5 py-2 text-sm font-medium text-white bg-white/5 hover:bg-white/10 rounded-full border border-white/10 transition-all font-sans"
+                onClick={() => login()}
+                className="h-10 px-8 bg-black text-white text-[12px] font-bold rounded-full hover:bg-zinc-900 transition-all shadow-lg active:scale-95"
               >
-                Logout
+                Sign In
               </button>
-            </div>
-          ) : (
+            )}
+          </div>
+        </div>
+      </header>
+
+      {/* Mathematically Centered Hero */}
+      <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-8 py-24">
+        <div className="w-full max-w-5xl mx-auto flex flex-col items-center text-center">
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-zinc-200/60 shadow-sm mb-12"
+          >
+            <Sparkles size={14} className="text-zinc-400" />
+            <span className="text-[11px] font-medium tracking-wide text-zinc-500 uppercase">The AI Growth Engine</span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            className="text-[44px] sm:text-[64px] md:text-[84px] font-semibold tracking-[-0.03em] leading-[1.05] text-zinc-900 mb-8"
+          >
+            Hire an AI marketing team
+            <br />
+            <span className="text-zinc-400">for your next campaign.</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            className="text-[18px] md:text-[21px] text-zinc-500 font-normal leading-[1.6] max-w-2xl mb-16"
+          >
+            LaunchAngel discovers hidden viral creators, negotiates rates automatically, and predicts campaign ROI—letting you scale your brand effortlessly.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+          >
             <button
-              onClick={() => login("startup")}
-              className="flex items-center gap-2 px-6 py-2.5 bg-white text-black font-semibold rounded-full hover:bg-zinc-200 transition-all text-sm font-sans"
+              onClick={() => login()}
+              className="h-[72px] px-16 bg-black text-white font-bold rounded-[22px] shadow-[0_24px_50px_-12px_rgba(0,0,0,0.25)] hover:shadow-[0_28px_60px_-12px_rgba(0,0,0,0.35)] hover:bg-zinc-900 transition-all flex items-center justify-center gap-4 text-[18px] active:scale-[0.98]"
             >
-              <Bot className="w-4 h-4" />
-              Continue with Google
+              Launch App <ChevronRight size={22} />
             </button>
-          )}
+          </motion.div>
+
         </div>
-      </nav>
+      </main>
 
-      {/* Hero Section */}
-      <section className="relative pt-40 pb-20 px-8 flex flex-col items-center text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-purple-400 mb-8"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
-          </span>
-          Next-Gen Influencer Marketing
-        </motion.div>
-
-        <motion.h1
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="text-6xl md:text-8xl font-black tracking-tighter leading-tight mb-8"
-        >
-          Autonomous <br />
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-400">
-            Growth Agents
-          </span>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="max-w-2xl text-lg md:text-xl text-zinc-400 mb-12"
-        >
-          Stop managing influencers. Start managing growth. Our AI agents autonomously plan,
-          execute, and optimize your marketing campaigns from start to finish.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="flex flex-col sm:flex-row gap-4"
-        >
-          <button className="h-14 px-8 flex items-center gap-2 bg-white text-black font-semibold rounded-2xl hover:bg-zinc-200 transition-all text-lg shadow-2xl shadow-white/5">
-            Launch Your Campaign <ArrowRight size={20} />
-          </button>
-          <button className="h-14 px-8 flex items-center gap-2 bg-white/5 text-white font-semibold rounded-2xl border border-white/10 hover:bg-white/10 transition-all text-lg">
-            Watch Demo
-          </button>
-        </motion.div>
-
-        {/* Floating UI Mockup Preview */}
-        <motion.div
-          initial={{ opacity: 0, y: 100 }}
-          animate={{ opacity: 1, y: 40 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          className="mt-20 w-full max-w-5xl aspect-video rounded-3xl border border-white/10 bg-zinc-900/50 backdrop-blur-2xl overflow-hidden relative shadow-2xl shadow-purple-500/10"
-        >
-          <div className="absolute top-0 left-0 right-0 h-10 bg-white/5 border-b border-white/5 flex items-center px-4 gap-2">
-            <div className="w-3 h-3 rounded-full bg-red-500/50" />
-            <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
-            <div className="w-3 h-3 rounded-full bg-green-500/50" />
-          </div>
-          <div className="p-12 text-left grid grid-cols-3 gap-8 h-full">
-            <div className="col-span-1 space-y-4 pt-4">
-              <div className="h-4 w-2/3 bg-white/10 rounded-md" />
-              <div className="h-32 w-full bg-white/5 rounded-xl border border-white/10" />
-              <div className="h-4 w-1/2 bg-white/10 rounded-md" />
-              <div className="h-24 w-full bg-white/5 rounded-xl border border-white/10" />
-            </div>
-            <div className="col-span-2 pt-4 flex flex-col items-center justify-center border-l border-white/5 pl-8">
-              <div className="w-20 h-20 bg-gradient-to-tr from-purple-500 to-blue-500 rounded-full mb-6 blur-2xl opacity-20 absolute" />
-              <Zap className="w-12 h-12 text-purple-500 mb-4 animate-pulse" />
-              <h3 className="text-2xl font-bold mb-2">Analyzing Content DNA...</h3>
-              <p className="text-zinc-500 text-sm">Identifying top 30 hooks and audience sentiment</p>
-            </div>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Features Grid */}
-      <section id="features" className="py-24 px-8 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <FeatureCard
-            icon={<TrendingUp className="text-blue-500" />}
-            title="Predictive Analytics"
-            description="Our agents use historical performance data to predict the ROI of every creator before you spend a dime."
-          />
-          <FeatureCard
-            icon={<Bot className="text-purple-500" />}
-            title="Style-Matched Hooks"
-            description="AI generates scripts that perfectly mirror a creator's natural content style for maximum authenticity."
-          />
-          <FeatureCard
-            icon={<ShieldCheck className="text-cyan-500" />}
-            title="Auto-Review Pipeline"
-            description="Forget manual checking. Our agents verify video quality, hook strength, and brand safety automatically."
-          />
+      {/* Premium Minimalist Footer */}
+      <footer className="relative z-10 py-16 px-12 flex flex-col md:flex-row items-center justify-between gap-12 border-t border-zinc-50 mx-8">
+        <div className="flex items-center gap-3">
+          <div className="w-2 h-2 rounded-full bg-apple-green shadow-[0_0_10px_rgba(52,199,89,0.35)]" />
+          <span className="text-[11px] font-black text-zinc-300 uppercase tracking-[0.3em]">Operational Readiness 100%</span>
         </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-20 border-t border-white/5 px-8 text-center text-zinc-500 text-sm">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <Globe size={16} />
-          <span>Deployed worldwide via Google Cloud Run</span>
+        <div className="flex gap-16 text-[12px] font-medium text-zinc-400 tracking-wide">
+          <Link href="/privacy-policy" className="hover:text-black transition-colors cursor-pointer">Privacy Policy</Link>
+          <Link href="/terms-and-service" className="hover:text-black transition-colors cursor-pointer">Terms of Service</Link>
+          <span className="text-zinc-400">&copy; 2026 LaunchAngel Corp</span>
         </div>
-        <p>&copy; 2026 LaunchAngel. All rights reserved.</p>
       </footer>
-    </div>
-  );
-}
 
-function FeatureCard({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) {
-  return (
-    <div className="p-8 rounded-3xl bg-white/5 border border-white/10 hover:border-white/20 transition-all group">
-      <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-        {icon}
-      </div>
-      <h3 className="text-xl font-bold mb-3">{title}</h3>
-      <p className="text-zinc-400 leading-relaxed text-sm">
-        {description}
-      </p>
     </div>
   );
 }
